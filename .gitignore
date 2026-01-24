@@ -1,0 +1,34 @@
+# Virtual environment
+venv/
+.venv/
+
+# Environment variables (NEVER commit this!)
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# ChromaDB local storage
+chroma_db/
+
+# Raw data (too large for git)
+data/raw/
+
+# IDE settings
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
