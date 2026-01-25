@@ -1,0 +1,24 @@
+{
+  "processed_at": "2026-01-25T15:40:09.813520",
+  "raw_data_dir": "/Users/mike/Documents/Projects/nfl-rag-app/data/raw",
+  "output_file": "/Users/mike/Documents/Projects/nfl-rag-app/data/processed/chunks.json",
+  "chunk_stats": {
+    "total_chunks": 26513,
+    "by_type": {
+      "team_info": 36,
+      "player_bio": 5761,
+      "player_season": 2249,
+      "game_summary": 1408,
+      "player_game": 17059
+    },
+    "avg_text_length": 254,
+    "total_text_length": 6755947
+  },
+  "settings": {
+    "include_player_seasons": true,
+    "include_player_games": true,
+    "include_games": true,
+    "include_player_bios": true,
+    "include_teams": true
+  }
+}
