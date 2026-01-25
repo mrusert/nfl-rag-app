@@ -19,9 +19,19 @@ sentence-transformers==3.0.1
 
 # Data processing
 pandas==2.2.2
+polars>=1.0.0  # Required by nflreadpy
+pyarrow>=14.0.0  # Required for Polars to_pandas() conversion
 
 # Environment variables
 python-dotenv==1.0.1
 
 # Utilities
 tqdm==4.66.5
+
+# Weather data
+openmeteo-requests==1.2.0
+requests-cache==1.2.0
+retry-requests==2.0.0
+
+# NFL Data (nflreadpy replaces deprecated nfl-data-py)
+nflreadpy>=0.1.5
