@@ -1,5 +1,5 @@
 {
-  "processed_at": "2026-01-25T21:29:12.384521",
+  "processed_at": "2026-01-25T22:09:22.104531",
   "raw_data_dir": "/Users/mike/Documents/Projects/nfl-rag-app/data/raw",
   "output_file": "/Users/mike/Documents/Projects/nfl-rag-app/data/processed/chunks.json",
   "chunk_stats": {
@@ -11,8 +11,8 @@
       "game_summary": 1408,
       "player_game": 17059
     },
-    "avg_text_length": 254,
-    "total_text_length": 6755947
+    "avg_text_length": 366,
+    "total_text_length": 9729297
   },
   "settings": {
     "include_player_seasons": true,
