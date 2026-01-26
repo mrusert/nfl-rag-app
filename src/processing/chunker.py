@@ -51,10 +51,11 @@ class Chunk:
 
 def generate_chunk_id(chunk_type: str, *args) -> str:
     """Generate a unique, deterministic ID for a chunk."""
-    components = [chunk_type] + [str(a) for a in args if a]
+    # Filter out None and empty values, convert to strings
+    components = [chunk_type] + [str(a) for a in args if a is not None and str(a)]
     key = "_".join(components)
-    # Use a short hash to keep IDs manageable
-    hash_suffix = hashlib.md5(key.encode()).hexdigest()[:8]
+    # Use a longer hash (16 chars) to avoid collisions with large datasets
+    hash_suffix = hashlib.md5(key.encode()).hexdigest()[:16]
     return f"{chunk_type}_{hash_suffix}"
 
 
@@ -157,6 +158,9 @@ class NFLChunker:
         if DEBUG:
             print(f"Chunking {len(data)} player-season records...")
         
+        # Track seen IDs to avoid duplicates
+        seen_ids = set()
+        
         for player in data:
             # Skip players with minimal stats
             total_yards = (
@@ -169,11 +173,18 @@ class NFLChunker:
             
             text, metadata = player_season_chunk(player)
             
+            # Include player_name for uniqueness in case player_id is missing or duplicated
             chunk_id = generate_chunk_id(
                 "player_season",
                 player.get("player_id"),
+                player.get("player_name") or player.get("player_display_name"),
                 player.get("season"),
             )
+            
+            # Skip if we've already seen this ID
+            if chunk_id in seen_ids:
+                continue
+            seen_ids.add(chunk_id)
             
             yield Chunk(id=chunk_id, text=text, metadata=metadata)
     
