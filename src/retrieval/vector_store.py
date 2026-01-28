@@ -393,6 +393,9 @@ def build_metadata_filter(
     temperature_category: Optional[str] = None,
     was_favorite: Optional[bool] = None,
     was_underdog: Optional[bool] = None,
+    is_playoff: Optional[bool] = None,
+    opponent: Optional[str] = None,
+    game_type: Optional[Any] = None,  # Can be string or dict like {"$ne": "REG"}
     **kwargs,
 ) -> Optional[dict]:
     """
@@ -401,13 +404,16 @@ def build_metadata_filter(
     Args:
         chunk_type: Filter by chunk type (player_season, player_game, etc.)
         team: Filter by team abbreviation
-        player_name: Filter by player name
+        player_name: Filter by player name (exact match)
         season: Filter by season year
         position: Filter by position
         venue_type: Filter by venue type (outdoor, dome)
         temperature_category: Filter by temperature category
         was_favorite: Filter by favorite status
         was_underdog: Filter by underdog status
+        is_playoff: Filter by playoff game
+        opponent: Filter by opponent team
+        game_type: Filter by game type (REG, POST, WC, DIV, CON, SB) or dict like {"$ne": "REG"}
         **kwargs: Additional filters
         
     Returns:
@@ -433,6 +439,16 @@ def build_metadata_filter(
         conditions.append({"was_favorite": was_favorite})
     if was_underdog is not None:
         conditions.append({"was_underdog": was_underdog})
+    if is_playoff is not None:
+        conditions.append({"is_playoff": is_playoff})
+    if opponent:
+        conditions.append({"opponent": opponent})
+    if game_type is not None:
+        if isinstance(game_type, dict):
+            # Complex filter like {"$ne": "REG"}
+            conditions.append({"game_type": game_type})
+        else:
+            conditions.append({"game_type": game_type})
     
     # Add any additional filters
     for key, value in kwargs.items():
@@ -456,6 +472,7 @@ if __name__ == "__main__":
     parser.add_argument("--stats", action="store_true", help="Show store statistics")
     parser.add_argument("--search", type=str, help="Search query")
     parser.add_argument("--team", type=str, help="Filter by team")
+    parser.add_argument("--player", type=str, help="Filter by player name")
     parser.add_argument("--type", type=str, help="Filter by chunk type")
     parser.add_argument("-n", type=int, default=5, help="Number of results")
     
@@ -484,6 +501,7 @@ if __name__ == "__main__":
         where = build_metadata_filter(
             chunk_type=args.type,
             team=args.team,
+            player_name=args.player,
         )
         
         if where:

@@ -1,37 +1,28 @@
-# Web framework
-fastapi==0.115.0
-uvicorn[standard]==0.30.6
+# NFL RAG Application Dependencies
 
-# Web scraping
-requests==2.32.3
-beautifulsoup4==4.12.3
-lxml==5.2.2
+# Data Loading
+nflreadpy>=0.2.0
+pandas>=2.0.0
+requests>=2.28.0
 
-# Vector database
-chromadb==0.5.5
+# Text Processing
+beautifulsoup4>=4.12.0
 
-# LLM clients
-anthropic==0.34.1
-ollama==0.3.2
+# Vector Database & Embeddings
+chromadb>=0.4.0
+sentence-transformers>=2.2.0
 
-# Embeddings (ChromaDB uses this by default)
-sentence-transformers==3.0.1
+# API
+fastapi>=0.100.0
+uvicorn[standard]>=0.23.0
+pydantic>=2.0.0
 
-# Data processing
-pandas==2.2.2
-polars>=1.0.0  # Required by nflreadpy
-pyarrow>=14.0.0  # Required for Polars to_pandas() conversion
+# Environment
+python-dotenv>=1.0.0
 
-# Environment variables
-python-dotenv==1.0.1
+# Progress bars
+tqdm>=4.65.0
 
-# Utilities
-tqdm==4.66.5
-
-# Weather data
-openmeteo-requests==1.2.0
-requests-cache==1.2.0
-retry-requests==2.0.0
-
-# NFL Data (nflreadpy replaces deprecated nfl-data-py)
-nflreadpy>=0.1.5
+# Optional: for development
+# pytest>=7.0.0
+# httpx>=0.24.0  # for testing FastAPI
