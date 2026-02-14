@@ -1,31 +1,27 @@
 import { useState } from 'react';
 import { QueryInput } from './components/QueryInput';
 import { AnswerDisplay } from './components/AnswerDisplay';
-import { SourcesList } from './components/SourcesList';
 import { FilterPanel } from './components/FilterPanel';
 import { HealthStatus } from './components/HealthStatus';
 import { LoadingSpinner } from './components/LoadingSpinner';
-import { useQueryMutation } from './hooks/useQuery';
-import type { QueryResponse, SearchFilters } from './types/api';
+import { useAgentMutation } from './hooks/useAgent';
+import type { AgentResponse, SearchFilters } from './types/api';
 
 interface HistoryItem {
   query: string;
-  response: QueryResponse;
+  response: AgentResponse;
   timestamp: Date;
 }
 
 function App() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [filters, setFilters] = useState<SearchFilters>({});
-  const queryMutation = useQueryMutation();
+  const agentMutation = useAgentMutation();
 
   const handleSubmit = async (query: string) => {
     try {
-      const response = await queryMutation.mutateAsync({
-        query,
-        num_results: 5,
-        temperature: 0.7,
-        auto_filter: true,
+      const response = await agentMutation.mutateAsync({
+        question: query,
       });
 
       setHistory((prev) => [
@@ -59,7 +55,7 @@ function App() {
         <div className="mb-8">
           <QueryInput
             onSubmit={handleSubmit}
-            isLoading={queryMutation.isPending}
+            isLoading={agentMutation.isPending}
             placeholder="Ask about NFL stats, players, games, weather conditions..."
           />
         </div>
@@ -70,7 +66,7 @@ function App() {
         </div>
 
         {/* Loading state */}
-        {queryMutation.isPending && (
+        {agentMutation.isPending && (
           <div className="flex items-center justify-center py-12">
             <div className="flex flex-col items-center gap-3">
               <LoadingSpinner size="lg" className="text-blue-600" />
@@ -80,16 +76,16 @@ function App() {
         )}
 
         {/* Error state */}
-        {queryMutation.isError && (
+        {agentMutation.isError && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
             <p className="text-sm text-red-700">
-              {queryMutation.error?.message || 'An error occurred while processing your query.'}
+              {agentMutation.error?.message || 'An error occurred while processing your query.'}
             </p>
           </div>
         )}
 
         {/* Results */}
-        {history.length > 0 && !queryMutation.isPending && (
+        {history.length > 0 && !agentMutation.isPending && (
           <div className="space-y-8">
             {history.map((item, index) => (
               <div key={index} className="space-y-4">
@@ -134,7 +130,6 @@ function App() {
                   </div>
                   <div className="flex-1">
                     <AnswerDisplay response={item.response} />
-                    <SourcesList sources={item.response.sources} />
                   </div>
                 </div>
 
@@ -147,7 +142,7 @@ function App() {
         )}
 
         {/* Empty state */}
-        {history.length === 0 && !queryMutation.isPending && (
+        {history.length === 0 && !agentMutation.isPending && (
           <div className="text-center py-12">
             <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
               <svg

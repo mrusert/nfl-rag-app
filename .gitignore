@@ -32,3 +32,6 @@ Thumbs.db
 dist/
 build/
 *.egg-info/
+
+# Personal
+For_Mike.md

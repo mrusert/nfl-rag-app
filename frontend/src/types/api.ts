@@ -79,3 +79,27 @@ export interface SearchFilters {
   player_name?: string;
   season?: number;
 }
+
+// Agent request
+export interface AgentRequest {
+  question: string;
+}
+
+// Tool call info from agent
+export interface ToolCall {
+  tool: string;
+  arguments: Record<string, unknown>;
+  success: boolean;
+  error: string | null;
+}
+
+// Response from Agent endpoint
+export interface AgentResponse {
+  answer: string;
+  tool_calls: ToolCall[];
+  thinking: string[];
+  total_time_ms: number;
+  iterations: number;
+  model: string;
+  feedback_entry_id?: string;
+}
